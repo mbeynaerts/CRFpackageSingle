@@ -8,7 +8,7 @@ using namespace Rcpp;
 // [[Rcpp::export]]
 arma::mat row_kron(const arma::mat& X, const arma::mat& Y) {
 
-  int m = X.n_rows
+  int m = X.n_rows;
   int n = X.n_cols;
   int p = Y.n_cols;
 
