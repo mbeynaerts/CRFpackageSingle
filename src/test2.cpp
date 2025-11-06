@@ -8,7 +8,7 @@ using namespace Rcpp;
 // [[Rcpp::export]]
 arma::mat row_kron(const arma::mat& X, const arma::mat& Y) {
 
-  int m = X.n_rows;
+  int m = X.n_rows
   int n = X.n_cols;
   int p = Y.n_cols;
 
@@ -239,7 +239,7 @@ NumericVector gradientNew(const arma::colvec &riskset1,
 
     // result(m) = -sum1-sum2;
     result(m) = -sum1;
-    
+
 
   }
 
@@ -413,7 +413,7 @@ arma::mat hessianNew(const arma::colvec& riskset1,
 
       // result(l,m) = -sum1-sum2;
       result(l,m) = -sum1;
-      
+
 
     }
   }
