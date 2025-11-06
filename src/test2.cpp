@@ -222,7 +222,8 @@ NumericVector gradientNew(const arma::colvec &riskset1,
   common1 = w1 % delta1 % I1 % (I5 - I2 % arma::exp(logtheta1)/(riskset1 + I2 % arma::exp(logtheta1) - I2));
   // common2 = w2 % delta2 % I3 % (I6 - I4 % arma::exp(logtheta2)/(riskset2 + I4 % arma::exp(logtheta2) - I4));
 
-  arma::mat deriv_mat(K,K), deriv_mat_t(K,K);
+  arma::mat deriv_mat(K,K);
+  arma::mat deriv_mat_t(K,K);
   arma::colvec deriv1(deriv_mat_t.memptr(), deriv_mat_t.n_elem, false, true);
   // arma::colvec deriv2(deriv_mat.memptr(), deriv_mat.n_elem, false, true);
 
@@ -385,7 +386,10 @@ arma::mat hessianNew(const arma::colvec& riskset1,
   common1 = -w1 % delta1 % I1 % (riskset1 - I2) % I2 % arma::exp(logtheta1) / arma::pow(riskset1 - I2 + I2 % arma::exp(logtheta1),2);
   // common2 = -w2 % delta2 % I3 % (riskset2 - I4) % I4 % arma::exp(logtheta2) / arma::pow(riskset2 - I4 + I4 % arma::exp(logtheta2),2);
 
-  arma::mat deriv_mat(K,K), deriv_mat_t(K,K), deriv_mat_l(K,K), deriv_mat_l_t(K,K);
+  arma::mat deriv_mat(K,K);
+  arma::mat deriv_mat_t(K,K);
+  arma::mat deriv_mat_l(K,K);
+  arma::mat deriv_mat_l_t(K,K);
 
   arma::colvec deriv1m(deriv_mat_t.memptr(), deriv_mat_t.n_elem, false, true);
   // arma::colvec deriv2m(deriv_mat.memptr(), deriv_mat.n_elem, false, true);
