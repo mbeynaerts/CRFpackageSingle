@@ -221,7 +221,6 @@ NumericVector gradientNew(const arma::colvec &riskset1,
 
   common1 = delta1 % I1 % (I5 - I2 % (arma::exp(logtheta1)/(riskset1 + I2 % arma::exp(logtheta1) - I2)));
   // common2 = w2 % delta2 % I3 % (I6 - I4 % arma::exp(logtheta2)/(riskset2 + I4 % arma::exp(logtheta2) - I4));
-  std::cout << "common1:\n" << common1 << "\n";
 
   arma::mat deriv_mat(K,K);
   arma::mat deriv_mat_t(K,K);
@@ -231,20 +230,14 @@ NumericVector gradientNew(const arma::colvec &riskset1,
   for (int m=0; m<totalparam; m++) {
 
     int idx1 = m % dim;
-    std::cout << "idx1:\n" << idx1 << "\n";
     int idx2 = m / dim;
-    std::cout << "idx2:\n" << idx2 << "\n";
 
 
     deriv_mat = arma::kron(X1.col(idx1), X2.col(idx2).as_row());
-    // std::cout << "deriv_mat:\n" << deriv_mat << "\n";
 
     deriv_mat_t = deriv_mat.t();
-    // std::cout << "deriv_mat_t:\n" << deriv_mat_t << "\n";
 
     double sum1 = arma::accu(common1 % deriv1.elem(idxN1));
-    // double sum2 = arma::accu(common2 % deriv2.elem(idxN2));
-    std::cout << "sum1:\n" << sum1 << "\n";
 
     // result(m) = -sum1-sum2;
     result(m) = -sum1;
