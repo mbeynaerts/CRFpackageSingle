@@ -413,9 +413,6 @@ Hessian <- function (coef.vector, X1, X2, Sl = NULL, datalist, weights) {
   logtheta1 <- c(t(logtheta))[datalist$idxN1]
   rm(logtheta)
 
-  w1 <- weights[datalist$idxN1]
-  w2 <- weights[datalist$idxN2]
-
   # hessian <- hessianC(riskset1 = datalist$riskset1,
   #                     riskset2 = datalist$riskset2,
   #                     logtheta1 = logtheta1,
@@ -445,8 +442,8 @@ Hessian <- function (coef.vector, X1, X2, Sl = NULL, datalist, weights) {
                         X2 = X2,
                         idxN1 = datalist$idxN1 - 1,
                         idxN2 = datalist$idxN2 - 1,
-                        w1 = w1,
-                        w2 = w2)
+                        w1 = weights[datalist$idxN1],
+                        w2 = weights[datalist$idxN2])
 
   if (!is.null(Sl)) hessian <- hessian + Sl
 
@@ -521,8 +518,8 @@ Score2 <- function(coef.vector, X1, X2, datalist, Sl = NULL, weights) {
                           X2 = X2,
                           idxN1 = datalist$idxN1 - 1,
                           idxN2 = datalist$idxN2 - 1,
-                          w1 = w1,
-                          w2 = w2) # gradientC returns vector of derivatives of -loglik
+                          w1 = weights[datalist$idxN1],
+                          w2 = weights[datalist$idxN2]) # gradientC returns vector of derivatives of -loglik
 
   if (!is.null(Sl)) penalty <- t(coef.vector) %*% Sl
   else penalty <- 0
