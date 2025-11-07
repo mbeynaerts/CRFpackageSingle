@@ -130,7 +130,7 @@ double logLikC(const NumericVector &riskset1,
   double sum1;
   // double sum2;
 
-  sum1 = Rcpp::sum(w1*delta1*I1*(logtheta1*I5 - Rcpp::log(riskset1 + I2*Rcpp::exp(logtheta1) - I2)));
+  sum1 = Rcpp::sum(delta1*I1*(logtheta1*I5 - Rcpp::log(riskset1 + I2*Rcpp::exp(logtheta1) - I2)));
   // sum2 = Rcpp::sum(w2*delta2*I3*(logtheta2*I6 - Rcpp::log(riskset2 + I4*Rcpp::exp(logtheta2) - I4)));
 
   // return(-sum1-sum2);
@@ -212,15 +212,16 @@ NumericVector gradientNew(const arma::colvec &riskset1,
                           const arma::colvec& w2) {
 
   int K = X1.n_rows;
-  int n = riskset1.size();
+  int n = riskset1.n_elem;
   int dim = X1.n_cols;
   int totalparam = pow(dim, 2);
   NumericVector result(totalparam);
   arma::colvec common1(n);
   // arma::colvec common2(n);
 
-  common1 = w1 % delta1 % I1 % (I5 - I2 % arma::exp(logtheta1)/(riskset1 + I2 % arma::exp(logtheta1) - I2));
+  common1 = delta1 % I1 % (I5 - I2 % (arma::exp(logtheta1)/(riskset1 + I2 % arma::exp(logtheta1) - I2)));
   // common2 = w2 % delta2 % I3 % (I6 - I4 % arma::exp(logtheta2)/(riskset2 + I4 % arma::exp(logtheta2) - I4));
+  std::cout << "common1:\n" << common1 << "\n";
 
   arma::mat deriv_mat(K,K);
   arma::mat deriv_mat_t(K,K);
@@ -230,13 +231,20 @@ NumericVector gradientNew(const arma::colvec &riskset1,
   for (int m=0; m<totalparam; m++) {
 
     int idx1 = m % dim;
+    std::cout << "idx1:\n" << idx1 << "\n";
     int idx2 = m / dim;
+    std::cout << "idx2:\n" << idx2 << "\n";
+
 
     deriv_mat = arma::kron(X1.col(idx1), X2.col(idx2).as_row());
+    // std::cout << "deriv_mat:\n" << deriv_mat << "\n";
+
     deriv_mat_t = deriv_mat.t();
+    // std::cout << "deriv_mat_t:\n" << deriv_mat_t << "\n";
 
     double sum1 = arma::accu(common1 % deriv1.elem(idxN1));
     // double sum2 = arma::accu(common2 % deriv2.elem(idxN2));
+    std::cout << "sum1:\n" << sum1 << "\n";
 
     // result(m) = -sum1-sum2;
     result(m) = -sum1;
@@ -383,7 +391,7 @@ arma::mat hessianNew(const arma::colvec& riskset1,
 
   arma::mat result(totalparam, totalparam);
 
-  common1 = -w1 % delta1 % I1 % (riskset1 - I2) % I2 % arma::exp(logtheta1) / arma::pow(riskset1 - I2 + I2 % arma::exp(logtheta1),2);
+  common1 = - delta1 % I1 % (riskset1 - I2) % I2 % arma::exp(logtheta1) / arma::pow(riskset1 - I2 + I2 % arma::exp(logtheta1),2);
   // common2 = -w2 % delta2 % I3 % (riskset2 - I4) % I4 % arma::exp(logtheta2) / arma::pow(riskset2 - I4 + I4 % arma::exp(logtheta2),2);
 
   arma::mat deriv_mat(K,K);

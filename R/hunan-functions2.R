@@ -483,13 +483,10 @@ Score2 <- function(coef.vector, X1, X2, datalist, Sl = NULL, weights) {
   logtheta <- WoodTensor(X1, X2, coef.vector = coef.vector)
   logtheta1 <- c(t(logtheta))[datalist$idxN1]
   logtheta2 <- c(logtheta)[datalist$idxN2]
+  rm(logtheta)
 
   # N1 <- datalist$riskset1[datalist$riskset1 > 0]
   # N2 <- datalist$riskset2[datalist$riskset2 > 0]
-
-  w1 <- weights[datalist$idxN1]
-  w2 <- weights[datalist$idxN2]
-
 
   # gradient <- gradientC(riskset1 = N1,
   #                       riskset2 = N2,
